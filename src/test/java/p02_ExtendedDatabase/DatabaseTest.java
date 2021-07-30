@@ -78,5 +78,39 @@ public class DatabaseTest {
         database.remove();
     }
 
+    @Test(expected = OperationNotSupportedException.class)
+    public void when_usernameNullPassedToFindUsername_then_exceptionIsThrown() throws OperationNotSupportedException {
+        database.findByUsername(null);
+    }
+
+    @Test
+    public void when_validUsernamePassedToFindByUsername_then_returnPerson() throws OperationNotSupportedException {
+        Person actualPerson = database.findByUsername("B");
+        Assert.assertEquals(actualPerson.getUsername(), PEOPLE[1].getUsername());
+        Assert.assertEquals(actualPerson.getId(), PEOPLE[1].getId());
+    }
+
+    @Test(expected = OperationNotSupportedException.class)
+    public void when_findByUsernameOnEmptyArray_then_exceptionIsThrown() throws OperationNotSupportedException {
+        database.remove();
+        database.remove();
+        database.remove();
+        database.findByUsername("A");
+    }
+
+    @Test(expected = OperationNotSupportedException.class)
+    public void when_findPersonByIdOnEmptyArray_then_exceptionIsThrown() throws OperationNotSupportedException {
+        database.remove();
+        database.remove();
+        database.remove();
+        database.findById(2);
+    }
+
+    @Test
+    public void when_validIdPassed_then_returnPerson() throws OperationNotSupportedException {
+        Person actualPerson = database.findById(2);
+        Assert.assertEquals(PEOPLE[1].getId(), actualPerson.getId());
+        Assert.assertEquals(PEOPLE[1].getUsername(), actualPerson.getUsername());
+    }
 
 }
